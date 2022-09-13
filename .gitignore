@@ -1,0 +1,9 @@
+# sensitive data
+env
+.env
+**/*.sqlite3
+
+# local settings
+**/__pycache__
+.vscode
+

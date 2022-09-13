@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "portfolio-toml"
+version = "1.0"
+description = ""
+authors = ["Ilya Shirko <https://github.com/ilyashirko>"]
+readme = "README.md"
+packages = [{include = "portfolio"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.1.1"
+django-phonenumbers = "^1.0.1"
+django-phonenumber-field = "^7.0.0"
+Pillow = "^9.2.0"
+flake8 = "^5.0.4"
+environs = "^9.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
