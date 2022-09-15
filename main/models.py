@@ -1,12 +1,25 @@
+from datetime import datetime
+
+from django.core.validators import RegexValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from datetime import datetime
 
 CURRENCIES = [
     ('RUB', 'руб.'),
     ('BYN', 'бел. руб.'),
     ('USD', 'долл.'),
     ('EUR', 'евро')
+]
+
+EDUCATION_DEGREES = [
+    ('secondary', 'среднее'),
+    ('secondary_special', 'среднее специальное'),
+    ('unfinished_higher', 'неоконченное высшее'),
+    ('higher', 'высшее'),
+    ('bachelor', 'бакалавр'),
+    ('master', 'магистр'),
+    ('candidate_science', 'кандидат наук'),
+    ('doctor_sciense', 'доктор наук'),
 ]
 
 
@@ -29,12 +42,24 @@ class Person(models.Model):
     )
     email = models.EmailField('E-mail', blank=True)
     github = models.URLField('GitHub', blank=True)
-    main_social_media = models.URLField('Main social media account', blank=True)
-    extra_social_media = models.URLField('Extra social media account', blank=True)
+    main_social_media = models.URLField(
+        'Main social media account',
+        blank=True
+    )
+    extra_social_media = models.URLField(
+        'Extra social media account',
+        blank=True
+    )
     personal_site = models.URLField('Personal site', blank=True)
 
     location = models.CharField('Город проживания', max_length=50)
     want_to_relocate = models.BooleanField('Готов к переезду')
+
+    education = models.CharField(
+        'Образование',
+        choices=EDUCATION_DEGREES,
+        max_length=50
+    )
 
     def get_age(self):
         today = datetime.now().date()
@@ -51,7 +76,7 @@ class Person(models.Model):
 
     def __str__(self):
         return f'{self.last_name} {self.first_name} {self.patronymic}'
-    
+
     def initials(self):
         return f'{self.last_name} {self.first_name[0]}. {self.patronymic[0]}.'
 
@@ -67,17 +92,21 @@ class Resume(models.Model):
 
     desired_position = models.CharField('Желаемая должность', max_length=50)
     desired_salary_amount = models.SmallIntegerField('Желаемая зарплата')
-    desired_salary_currensy = models.CharField('Валюта', max_length=10, choices=CURRENCIES)
+    desired_salary_currensy = models.CharField(
+        'Валюта',
+        max_length=10,
+        choices=CURRENCIES
+    )
 
     soft_skills = models.ManyToManyField(
         'SoftSkill',
         verbose_name='Софт скиллы',
-        related_name='persons'    
+        related_name='persons'
     )
     hard_skills = models.ManyToManyField(
         'HardSkill',
         verbose_name='Хард скиллы',
-        related_name='persons'    
+        related_name='persons'
     )
 
     def get_places_of_work(self):
@@ -108,7 +137,7 @@ class PlaceOfWork(models.Model):
             return self.finished_at - self.started_at
         else:
             return datetime.now().date() - self.started_at
-    
+
     def __str__(self):
         return (
             f'[{self.person}]: {self.company} ({self.started_at} - '
@@ -130,24 +159,88 @@ class HardSkill(models.Model):
         return self.title
 
 
-class Recomendations(models.Model):
+class Recomendation(models.Model):
     person = models.ForeignKey(
         'Person',
         verbose_name='Соискатель',
         related_name='recomendations',
         on_delete=models.PROTECT
     )
+    resume = models.ManyToManyField(
+        'Resume',
+        verbose_name='Резюме',
+        related_name='recomendations',
+        blank=True
+    )
     recommender = models.CharField('Рекомендатель', max_length=100)
     company = models.CharField('Компания', max_length=50)
     post = models.CharField('Должность', max_length=50)
 
+    def __str__(self):
+        return f'{self.recommender} ({self.company}, {self.post})'
+
 
 class HigherEducation(models.Model):
-    pass
+    person = models.ForeignKey(
+        'Person',
+        verbose_name='Соискатель',
+        related_name='higher_education',
+        on_delete=models.PROTECT
+    )
+    institution = models.CharField('Учебное заведение', max_length=200)
+    specialization = models.CharField('Специальность', max_length=50)
+    started_at = models.SmallIntegerField(
+        'Год начала обучения',
+        validators=[
+            RegexValidator(r'^[0-9]{4}$')
+        ],
+        help_text='Введите год в формате YYYY (напр. 2012)'
+    )
+    finished_at = models.SmallIntegerField(
+        'Год окончания обучения (напр. 2012)',
+        validators=[
+            RegexValidator(r'^[0-9]{4}$')
+        ],
+        help_text='Введите год в формате YYYY (напр. 2012)',
+        blank=True
+    )
+
+    def __str__(self):
+        return f'{self.person.initials()} - {self.institution} ({self.finished_at})'
 
 
 class Course(models.Model):
     pass
 
+
 class Language(models.Model):
     pass
+
+
+class Photo(models.Model):
+    person = models.ForeignKey(
+        'Person',
+        verbose_name='Соискатель',
+        related_name='photos',
+        on_delete=models.CASCADE
+    )
+    index = models.SmallIntegerField(
+        'Порядковый номер (UNIQUE ONLY)',
+        default=0
+    )
+    image = models.ImageField(
+        'Фотография',
+        upload_to='images'
+    )
+
+    class Meta:
+        ordering = ['index', ]
+
+
+class Visitor(models.Model):
+    telegram_id = models.SmallIntegerField('TG_id')
+    first_visit = models.DateTimeField(
+        'added at',
+        auto_now_add=True,
+        editable=False
+    )
