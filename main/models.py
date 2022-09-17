@@ -1,8 +1,12 @@
 from datetime import datetime
+from inspect import stack
 
 from django.core.validators import RegexValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from string import ascii_letters
+from random import choice
+
 
 CURRENCIES = [
     ('RUB', 'руб.'),
@@ -24,6 +28,18 @@ EDUCATION_DEGREES = [
 
 
 class Person(models.Model):
+    nickname = models.CharField(
+        'Никнейм',
+        max_length=50,
+        default=''.join(choice(ascii_letters) for _ in range(8)),
+        unique=True
+    )
+    telegram_id = models.SmallIntegerField(
+        'Telegram ID',
+        default=0,
+        unique=True
+    )
+
     first_name = models.CharField('Имя', max_length=50)
     first_name_eng = models.CharField('Name', max_length=50, blank=True)
 
@@ -244,3 +260,69 @@ class Visitor(models.Model):
         auto_now_add=True,
         editable=False
     )
+
+
+class BiographyChapter(models.Model):
+    person = models.ForeignKey(
+        'Person',
+        verbose_name='Соискатель',
+        related_name='biography_chapters',
+        on_delete=models.CASCADE
+    )
+    index = models.SmallIntegerField(
+        'Порядковый номер (UNIQUE ONLY)',
+        default=0
+    )
+    title = models.CharField('Название раздела', max_length=25)
+    text = models.TextField('Текст')
+    photo = models.ForeignKey(
+        'Photo',
+        verbose_name='Фотография',
+        related_name='biography_chapter',
+        on_delete=models.PROTECT,
+        blank=True
+    )
+
+    def __str__(self):
+        return f'{self.person.initials()} - {self.title} ({self.index})'
+
+    class Meta:
+        ordering = ['index', ]
+
+class Project(models.Model):
+    person = models.ForeignKey(
+        'Person',
+        verbose_name='Соискатель',
+        related_name='projects',
+        on_delete=models.CASCADE
+    )
+    title = models.CharField('Название проекта', max_length=25, unique=True)
+    url = models.URLField('Ссылка на github', blank=True)
+    short_description = models.TextField('Короткое описание', max_length=500)
+    develop_stack = models.ManyToManyField(
+        'HardSkill',
+        verbose_name='Стек',
+        related_name='projects'
+    )
+
+    def __str__(self):
+        return f'{self.person.initials()} - {self.title}'
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(
+        'Project',
+        verbose_name='Проект',
+        related_name='images',
+        on_delete=models.CASCADE
+    )
+    index = models.SmallIntegerField(
+        'Порядковый номер (UNIQUE ONLY)',
+        default=0
+    )
+    image = models.ImageField(
+        'Фотография',
+        upload_to='images'
+    )
+
+    class Meta:
+        ordering = ['index', ]
