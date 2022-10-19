@@ -113,6 +113,10 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = '/assets/'
 
+STATICFILES_DIRS = [
+    'static',
+]
+
 MEDIA_URL = 'media/'
 
 

@@ -1,0 +1,10 @@
+.base_title {
+    text-align: left;
+    padding-top: 0px;
+    margin-top: 0;
+    position: static;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-left: 12px;
+}

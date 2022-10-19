@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navbar-Right-Links-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'Style.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md py-3" style="width: 70%;padding: 0;margin-left: 15%;">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#">
+                
+            <img width="10%" src="{% static 'rubiks_cube.png' %}">
+            <span>@IlyaShirko</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Биография</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Портфолио</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Резюме</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" style="margin: 0;margin-right: 10%;margin-left: 10%;">
+        <div class="row" style="margin-right: 0%;margin-left: 0;margin-top: 10px;margin-bottom: 10px;">
+            <div class="col-lg-7 col-xxl-9 h-auto">
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col-lg-3 h-auto" style="padding-right: 0;padding-left: 0;width: 30%;">
+                        <p class="base_title">Полное имя</p>
+                    </div>
+                    <div class="col-lg-12 h-auto" style="padding-right: 0;padding-left: 0;width: 70%;">
+                        <p style="margin-bottom: 0;font-weight: bold;">{{ candidate.last_name }} {{ candidate.first_name }} {{ candidate.patronymic }}</p>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col-lg-5 h-auto" style="padding-right: 0;padding-left: 0;width: 30%;">
+                        <p class="base_title">Cпециализация</p>
+                    </div>
+                    <div class="col-lg-12 h-auto" style="padding-right: 0;padding-left: 0;width: 70%;">
+                        <p style="margin-bottom: 0;font-weight: bold;">{{ candidate.desired_position }}</p>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col-lg-3 h-auto" style="padding-right: 0;padding-left: 0;width: 30%;">
+                        <p class="base_title">Номер телефона</p>
+                    </div>
+                    <div class="col-lg-12 h-auto" style="padding-right: 0;padding-left: 0;width: 70%;">
+                        <p style="margin-bottom: 0;font-weight: bold;">{{ candidate.phonenumber }}</p>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;font-weight: bold;">
+                    <div class="col-lg-3 h-auto" style="padding-right: 0;padding-left: 0;width: 30%;font-weight: bold;">
+                        <p class="base_title">E-mail</p>
+                    </div>
+                    <div class="col-lg-12 h-auto" style="padding-right: 0;padding-left: 0;width: 70%;font-weight: bold;">
+                        <p style="margin-bottom: 0;font-weight: bold;">{{ candidate.email }}</p>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;font-weight: bold;">
+                    <div class="col-lg-3 h-auto" style="padding-right: 0;padding-left: 0;width: 30%;font-weight: bold;">
+                        <p class="base_title">GitHub</p>
+                    </div>
+                    <div class="col-lg-12 h-auto" style="padding-right: 0;padding-left: 0;width: 70%;font-weight: bold;">
+                        <p style="margin-bottom: 0;font-weight: bold;">{{ candidate.github }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xxl-2 h-auto" style="position: relative;"><img src="{{ candidate.photo }}" style="position: absolute;max-height: 100%;max-width: 100%;width: auto;height: auto;text-align: center;"></div>
+        </div>
+        <div class="row" style="margin-right: 0%;margin-left: 0;margin-top: 10px;">
+            <div class="col-lg-6 h-auto">
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;"><strong>ABOUT ME</strong></h4>
+                        <p style="color: var(--bs-link-hover-color);font-weight: bold;font-size: 12px;text-align: justify; text-indent: 6mm;">Paragraph</p>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;"><strong>EDUCATION</strong></h4>
+                        <div class="row">
+                            <div class="col">
+                                <h5 style="font-weight: bold;color: var(--bs-black);">Synergy univercity</h5>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col">
+                                                <p style="margin-bottom: 0;font-size: 12px;font-weight: bold;">Civil lawyer</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p style="margin: 0;font-size: 12px;font-weight: bold;">Student, 5-th cource, dinstance learning</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <p style="margin: 0;margin-top: 6px;margin-bottom: 6px;text-align: right;font-weight: bold;">2018 - 2023</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;"><strong>EXPERIENCE</strong></h4>
+                        <div class="row" style="margin-top: 6px;margin-bottom: 6px;">
+                            <div class="col">
+                                <h5 style="font-weight: bold;color: var(--bs-black);">Sales coach</h5>
+                                <div class="row">
+                                    <div class="col-lg-8 col-xxl-12">
+                                        <div class="row">
+                                            <div class="col">
+                                                <p style="margin-bottom: 0;font-size: 12px;font-weight: bold;">from 03 march 2018 to nowadays</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p style="margin: 0;font-size: 12px;font-weight: bold;">OOO GoodCom</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;text-indent: 6mm;text-align: justify;">Так уж заведено, что хвастовство в той или иной степени свойственно, пожалуй, каждому из нас. Мы хвалимся новыми игрушками, потом школьными успехами, а дальше своими вторыми половинками и карьерами<br></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 h-auto">
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;font-weight: bold;">HARD SKILLS</h4>
+                        {% for row in hard_skills %}
+                            <div class="row h-auto">
+                                {% for skill in row %}
+                                    <div class="col">
+                                        <p style="text-align: center;font-weight: bold;color: var(--bs-link-hover-color);margin-top: 6px;margin-bottom: 6px;">{{skill}}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;font-weight: bold;">SOFT SKILLS</h4>   
+                        <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                            <div class="col">
+                                <h5 style="font-weight: bold;margin-bottom: 0;">Attention to detailes</h5>
+                                <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;margin: 0;">олртпловарп лвор плвоар пловар пловра пловра пловр аполр валопр влоар плвоар пловар полвра полвр апловар пловр аполвра полар пловра лопвр алопрв алопр влаопрвалопр влаорп лвоар пловар пловар пловар пловар пловар плвоар плвоар пова рп</p>
+                            </div>
+                        </div>
+                        <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                            <div class="col">
+                                <h5 style="font-weight: bold;margin-bottom: 0;">Heading</h5>
+                                <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;margin: 0;">Paragraph</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;"><strong>AWARDS</strong></h4>
+                        <div class="row">
+                            <div class="col">
+                                <h4>Best indicators for the end of the quarter</h4>
+                                <p>2017 year, Goodcom LTD.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                    <div class="col">
+                        <h4 style="text-align: center;border-bottom-style: solid;"><strong>EXPECTATIONS</strong></h4>
+                        <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;">Paragraph</p>
+                        <h6 style="font-weight: bold;text-decoration:  underline;">will be an advantage:</h6>
+                        <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;">Paragraph</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

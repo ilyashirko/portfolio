@@ -304,6 +304,11 @@ class Project(models.Model):
         verbose_name='Стек',
         related_name='projects'
     )
+    finished = models.BooleanField('Проект завершен?', default=True)
+    will_show = models.BooleanField('Показывать в подборке?', default=False)
+
+    def get_stack(self):
+        s
 
     def __str__(self):
         return f'{self.person.initials()} - {self.title}'

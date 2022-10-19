@@ -11,6 +11,7 @@ class Command(BaseCommand):
 
         bot = TelegramBot(
             telegram_bot_token=env.str('TELEGRAM_BOT_TOKEN'),
-            admin_telegram_id=env.int('ADMIN_TELEGRAM_ID')
+            admin_telegram_id=env.int('ADMIN_TELEGRAM_ID'),
+            person_telegram_id=env.int('PERSON_TELEGRAM_ID')
         )
         bot.run_bot()

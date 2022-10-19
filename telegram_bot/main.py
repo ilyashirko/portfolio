@@ -3,11 +3,11 @@ from logging import INFO, Logger
 from textwrap import dedent
 
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup,
-                      KeyboardButton, ReplyKeyboardMarkup)
-from telegram.ext import (CommandHandler, ConversationHandler, Filters,
+                      KeyboardButton, ReplyKeyboardMarkup, InputMediaPhoto)
+from telegram.ext import (CommandHandler, CallbackQueryHandler, Filters,
                           MessageHandler, Updater)
 
-from main.models import Visitor
+from main.models import Visitor, Person, Project
 from telegram_bot import messages
 
 BUTTONS = {
@@ -23,6 +23,7 @@ class TelegramBot():
     def __init__(self, **kwargs):
         self.telegram_bot_token = kwargs.get('telegram_bot_token', None)
         self.admin_telegram_id = kwargs.get('admin_telegram_id', None)
+        self.person_telegram_id = kwargs.get('person_telegram_id', None)
         self.updater = Updater(token=self.telegram_bot_token, use_context=True)
 
     class Keyboard():
@@ -33,7 +34,7 @@ class TelegramBot():
             self.resize = kwargs.get('resize', True)
             self.one_time = kwargs.get('one_time', False)
 
-        def make_keyboard(self):
+        def group_buttons(self):
             buttons = list()
             if self.header_buttons:
                 buttons += self.header_buttons
@@ -41,8 +42,11 @@ class TelegramBot():
                 buttons += self.main_buttons
             if self.footer_buttons:
                 buttons += self.footer_buttons
+            return buttons
+
+        def make_keyboard(self):
             return ReplyKeyboardMarkup(
-                buttons,
+                self.group_buttons(),
                 resize_keyboard=self.resize,
                 one_time_keyboard=self.one_time
             )
@@ -56,7 +60,14 @@ class TelegramBot():
             return ReplyKeyboardMarkup(
                 buttons,
                 resize_keyboard=True,
-            ) 
+            )
+        
+        def make_inline_keyboard(self):
+            return InlineKeyboardMarkup(
+                self.group_buttons(),
+                resize_keyboard=self.resize,
+                one_time_keyboard=self.one_time
+            )
 
     def main(self, update, context):
         context.bot.send_message(
@@ -72,7 +83,61 @@ class TelegramBot():
                 caption=messages.BIO[update.message.text]['text']
             )
 
-    def message_handler(self, update, context):
+    def portfolio(self, update, context):
+        try:
+            person = Person.objects.get(telegram_id=self.person_telegram_id)
+        except Person.DoesNotExist:
+            print('FUCK!')
+        projects = Project.objects.filter(person=person, will_show=True)[:5]
+        titles_buttons = [
+            [InlineKeyboardButton(project.title, callback_data=f'project:{project.title}')]
+            for project in projects
+        ]
+        context.bot.send_message(
+            update.effective_chat.id,
+            text='Основные проекты которые я бы хотел показать:',
+            reply_markup=self.Keyboard(main_buttons=titles_buttons).make_inline_keyboard()
+        )
+    
+    def _show_project(self, update, context, callback_value):
+        person = Person.objects.get(telegram_id=self.person_telegram_id)
+        project = Project.objects.get(person=person, title=callback_value)
+        images = [
+            InputMediaPhoto(media=image.image)
+            for image in project.images.all()[:10]
+        ]
+        context.bot.sendMediaGroup(
+            update.effective_chat.id,
+            media=images
+        )
+        develop_stack = ''
+        for lib in project.develop_stack.all():
+
+        develop_stack = ''
+        (develop_stack += f'[{lib.title}]' for lib in project.develop_stack.all())
+        context.bot.send_message(
+            update.effective_chat.id,
+            text=dedent(
+                f'''
+                {project.title}
+
+                {project.short_description}
+
+                Используемые технологии:
+                {develop_stack}
+
+                {project.url}
+                '''
+            )
+        )
+
+
+    def callback_handler(self, update, context):
+        callback_key, callback_value = update.callback_query.data.split(':')
+        if callback_key == 'project':
+            return self._show_project(update, context, callback_value)
+
+    def text_message_handler(self, update, context):
         user_id = update.effective_chat.id
         if update.message.text == BUTTONS['biography']:
             context.bot.send_message(
@@ -92,7 +157,7 @@ class TelegramBot():
         elif update.message.text in messages.BIO.keys():
             return self.biography(update, context)
         elif update.message.text == BUTTONS['portfolio']:
-            pass
+            return self.portfolio(update, context)
         elif update.message.text == BUTTONS['order_tg_bot']:
             pass
         elif update.message.text == BUTTONS['main']:
@@ -126,9 +191,11 @@ class TelegramBot():
         self.updater.dispatcher.add_handler(
             CommandHandler(command='main', callback=self.main)
         )
-        
         self.updater.dispatcher.add_handler(
-            MessageHandler(filters=Filters.all, callback=self.message_handler)
+            CallbackQueryHandler(self.callback_handler)
+        )
+        self.updater.dispatcher.add_handler(
+            MessageHandler(filters=Filters.text, callback=self.text_message_handler)
         )
         
         self.updater.start_polling()
