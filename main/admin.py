@@ -44,7 +44,7 @@ class PersonAdmin(SortableAdminBase, admin.ModelAdmin):
 
 @admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    raw_id_fields = ('soft_skills', 'hard_skills')
+    raw_id_fields = ('soft_skills', 'hard_skills', 'places_of_work')
 
 
 @admin.register(HardSkill)

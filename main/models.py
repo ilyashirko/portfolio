@@ -125,6 +125,12 @@ class Resume(models.Model):
         related_name='persons'
     )
 
+    places_of_work = models.ManyToManyField(
+        'PlaceOfWork',
+        verbose_name='Опыт работы',
+        related_name='resume'
+    )
+
     def get_places_of_work(self):
         return self.person.places_of_work.order_by('-started_at')
 
@@ -142,17 +148,30 @@ class PlaceOfWork(models.Model):
     company = models.CharField('Компания', max_length=50)
     post = models.CharField('Должность', max_length=50)
     location = models.CharField('Город (страна)', max_length=50)
-    started_at = models.DateField('Начало работы')
+    started_at = models.DateField('Начало работы', blank=True, null=True)
     finished_at = models.DateField('Окончание работы', blank=True, null=True)
+    summary = models.CharField(
+        'Суммарно проработал',
+        help_text='заполнять если не заполнено начало и окончание',
+        max_length=100,
+        blank=True,
+        null=True
+    )
     responsibilities = models.TextField('Обязанности')
     achievements = models.TextField('Достижения', blank=True)
+    
     retire_reasons = models.TextField('Причина увольнения', blank=True)
 
     def get_work_duration(self):
+        if self.summary:
+            return self.summary
         if self.finished_at:
-            return self.finished_at - self.started_at
+            return (
+                f'{self.started_at} - '
+                f'{self.finished_at if self.finished_at else "наст. время"}'
+            )
         else:
-            return datetime.now().date() - self.started_at
+            return f'c {self.started_at}'
 
     def __str__(self):
         return (
@@ -162,7 +181,15 @@ class PlaceOfWork(models.Model):
 
 
 class SoftSkill(models.Model):
+    person = models.ForeignKey(
+        'Person',
+        verbose_name='Соискатель',
+        related_name='softskills',
+        on_delete=models.PROTECT,
+        null=True
+    )
     title = models.CharField('Софт-скилл', max_length=50)
+    description = models.TextField('Описание', null=True)
 
     def __str__(self):
         return self.title
@@ -205,6 +232,7 @@ class HigherEducation(models.Model):
     )
     institution = models.CharField('Учебное заведение', max_length=200)
     specialization = models.CharField('Специальность', max_length=50)
+    department = models.CharField('Отделение', max_length=100, default='Дневное')
     started_at = models.SmallIntegerField(
         'Год начала обучения',
         validators=[
@@ -218,12 +246,15 @@ class HigherEducation(models.Model):
             RegexValidator(r'^[0-9]{4}$')
         ],
         help_text='Введите год в формате YYYY (напр. 2012)',
-        blank=True
+        blank=True,
+        null=True
     )
 
     def __str__(self):
         return f'{self.person.initials()} - {self.institution} ({self.finished_at})'
 
+    def education_period(self):
+        return f'c {self.started_at}{f" по {self.finished_at}" if self.finished_at else ""}'
 
 class Course(models.Model):
     pass

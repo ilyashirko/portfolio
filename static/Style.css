@@ -7,4 +7,10 @@
     font-weight: bold;
     margin-bottom: 0;
     margin-left: 12px;
+    color: var(--bs-black);
+}
+.table_of_contents {
+    text-align: center;
+    color: var(--bs-black);
+    border-bottom-style: solid;
 }
