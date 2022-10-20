@@ -6,7 +6,7 @@ from main import views as main_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main_views.resume, name='main_page'),
+    path('resume/', main_views.resume, name='resume'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

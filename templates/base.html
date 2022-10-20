@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navbar-Right-Links-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'Style.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md py-3" style="width: 70%;padding: 0;margin-left: 15%;">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#">
+                
+            <img width="10%" src="{% static 'rubiks_cube.png' %}">
+            <span>@IlyaShirko</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Биография</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Портфолио</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Резюме</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+{% block content %}
+{% endblock %}
+
+    <footer>
+        <p style="text-align: center; color: gray; margin: 0px; margin-top: 10mm;">&#169; Ширко Илья Владимирович 2022.</p>
+        <p style="text-align: center; color: gray; margin: 0px; margin-bottom: 5mm;">Разрешено использование исходного кода в личных целях. Для коммерческого использования свяжитесь с разработчиком.</p>
+    </footer>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
