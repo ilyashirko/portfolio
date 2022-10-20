@@ -32,9 +32,25 @@ def resume(request):
             'post': place.post,
             'duration': place.get_work_duration(),
             'company': place.company,
-            'responsibilities': place.responsibilities
+            'responsibilities': place.responsibilities.split('\n')
         }
         for place in resume.places_of_work.all()
+    ]
+    recommendations = [
+        {
+            'recommender': recommendation.recommender,
+            'company': recommendation.company,
+            'post': recommendation.post
+        }
+        for recommendation in resume.recommendations.all()
+    ]
+    achievements = [
+        {
+            'title': achievement.title,
+            'reached_at': achievement.reached_at,
+            'company': achievement.company
+        }
+        for achievement in candidate.achievements.all()
     ]
     context = {
         'candidate': {
@@ -52,5 +68,9 @@ def resume(request):
         'higher_education': highter_education,
         'places_of_work': places_of_work,
         'about_candidate': resume.about_candidate.split('\n'),
+        'recommendations': recommendations,
+        'expectations': resume.expectations.split('\n'),
+        'advantages': resume.advantages.split('\n'),
+        'achievements': achievements,
     }
     return render(request, 'resume.html', context=context)

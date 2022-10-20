@@ -130,8 +130,15 @@ class Resume(models.Model):
         verbose_name='Опыт работы',
         related_name='resume'
     )
+    recommendations = models.ManyToManyField(
+        'Recommendation',
+        verbose_name='Рекоммендации',
+        blank=True
+    )
     about_candidate = models.TextField('Коротко о себе', blank=True)
-
+    expectations = models.TextField('Ожидания', help_text='заполнять по одному через Enter', blank=True)
+    advantages = models.TextField('Ожидания', help_text='заполнять по одному через Enter', blank=True)
+    
     def get_places_of_work(self):
         return self.person.places_of_work.order_by('-started_at')
 
@@ -146,8 +153,8 @@ class PlaceOfWork(models.Model):
         related_name='places_of_work',
         on_delete=models.PROTECT
     )
-    company = models.CharField('Компания', max_length=50)
-    post = models.CharField('Должность', max_length=50)
+    company = models.CharField('Компания', max_length=200)
+    post = models.CharField('Должность', max_length=100)
     location = models.CharField('Город (страна)', max_length=50)
     started_at = models.DateField('Начало работы', blank=True, null=True)
     finished_at = models.DateField('Окончание работы', blank=True, null=True)
@@ -203,19 +210,14 @@ class HardSkill(models.Model):
         return self.title
 
 
-class Recomendation(models.Model):
+class Recommendation(models.Model):
     person = models.ForeignKey(
         'Person',
         verbose_name='Соискатель',
-        related_name='recomendations',
+        related_name='recommendations',
         on_delete=models.PROTECT
     )
-    resume = models.ManyToManyField(
-        'Resume',
-        verbose_name='Резюме',
-        related_name='recomendations',
-        blank=True
-    )
+    
     recommender = models.CharField('Рекомендатель', max_length=100)
     company = models.CharField('Компания', max_length=50)
     post = models.CharField('Должность', max_length=50)
@@ -363,3 +365,21 @@ class ProjectImage(models.Model):
 
     class Meta:
         ordering = ['index', ]
+
+
+class Achievement(models.Model):
+    person = models.ForeignKey(
+        'Person',
+        verbose_name='Соискатель',
+        related_name='achievements',
+        on_delete=models.CASCADE
+    )
+    title = models.CharField('Достижение', max_length=200)
+    reached_at = models.SmallIntegerField(
+        'Год награждения',
+        validators=[
+            RegexValidator(r'^[0-9]{4}$')
+        ],
+        help_text='Введите год в формате YYYY (напр. 2012)'
+    )
+    company = models.CharField('Компания', max_length=100)

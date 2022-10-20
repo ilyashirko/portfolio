@@ -137,7 +137,9 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col">
-                                                    <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;text-indent: 6mm;text-align: justify;">{{ place.responsibilities }}<br></p>
+                                                    {% for paragraph in place.responsibilities %}
+                                                        <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;text-indent: 6mm;text-align: justify; margin-top: 3px; margin-bottom: 3px;">{{ paragraph }}<br></p>
+                                                    {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
@@ -179,24 +181,45 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% if achievements %}
+                    <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                        <div class="col">
+                            <h4 class="table_of_contents"><strong>ДОСТИЖЕНИЯ</strong></h4>
+                            {% for achievement in achievements %}
+                                <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                                    <div class="col">
+                                        <h5 style="font-weight: bold; margin-bottom: 0px;">{{achievement.title}}</h5>
+                                        <p style="font-size: 12px;">{{achievement.reached_at}}, {{achievement.company}}.</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
                     <div class="col">
-                        <h4 class="table_of_contents"><strong>ДОСТИЖЕНИЯ</strong></h4>
-                        <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
-                            <div class="col">
-                                <h5 style="font-weight: bold; margin-bottom: 0px;">Best indicators for the end of the quarter</h5>
-                                <p style="font-size: 12px;">2017 year, Goodcom LTD.</p>
+                        <h4 class="table_of_contents"><strong>РЕКОММЕНДАЦИИ</strong></h4>
+                        {% for recommendation in recommendations %}
+                            <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
+                                <div class="col">
+                                    <h5 style="font-weight: bold; margin-bottom: 0px;">{{recommendation.recommender}}</h5>
+                                    <p style="font-size: 12px;">{{recommendation.company}}. {{recommendation.post}} </p>
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
                     <div class="col">
                         <h4 class="table_of_contents"><strong>ОЖИДАНИЯ</strong></h4>
                         <div class="row h-auto" style="margin-right: 0;margin-left: 0;margin-top: 6px;margin-bottom: 6px;">
-                            <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;">Paragraph</p>
+                            {% for expectation in expectations %}
+                                <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;margin-top: 6px;margin-bottom: 6px;">{{ expectation }}</p>
+                            {% endfor %}
                             <h6 style="font-weight: bold;text-decoration:  underline;">будет преимуществом:</h6>
-                            <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;">Paragraph</p>
+                            {% for advantage in advantages %}
+                                <p style="font-size: 12px;color: var(--bs-link-hover-color);font-weight: bold;margin-top: 6px;margin-bottom: 6px;">{{ advantage }}</p>
+                            {% endfor %}
                     
                         </div>
                     </div>
@@ -204,6 +227,10 @@
             </div>
         </div>
     </div>
+    <footer>
+        <p style="text-align: center; color: gray; margin: 0px; margin-top: 10mm;">&#169; Ширко Илья Владимирович 2022.</p>
+        <p style="text-align: center; color: gray; margin: 0px; margin-bottom: 5mm;">Разрешено использование исходного кода в личных целях. Для коммерческого использования свяжитесь с разработчиком.</p>
+    </footer>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>
 

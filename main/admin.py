@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 
 from main.models import (HardSkill, HigherEducation, Person, PlaceOfWork,
-                         Resume, SoftSkill, Recomendation, Photo, Visitor, Project, ProjectImage, BiographyChapter)
+                         Resume, SoftSkill, Achievement, Recommendation, Photo, Visitor, Project, ProjectImage, BiographyChapter)
 
 
 class PersonImageInline(SortableStackedInline):
@@ -44,7 +44,7 @@ class PersonAdmin(SortableAdminBase, admin.ModelAdmin):
 
 @admin.register(Resume)
 class ResumeAdmin(admin.ModelAdmin):
-    raw_id_fields = ('soft_skills', 'hard_skills', 'places_of_work')
+    raw_id_fields = ('soft_skills', 'hard_skills', 'places_of_work', 'recommendations')
 
 
 @admin.register(HardSkill)
@@ -67,8 +67,8 @@ class HigherEducationAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Recomendation)
-class RecomendationAdmin(admin.ModelAdmin):
+@admin.register(Recommendation)
+class RecommendationAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(Visitor)
@@ -85,3 +85,7 @@ class ProjectAdmin(SortableAdminBase, admin.ModelAdmin):
         ProjectImageInline,
     ]
     raw_id_fields = ('develop_stack',)
+
+@admin.register(Achievement)
+class AchievementAdmin(admin.ModelAdmin):
+    pass
