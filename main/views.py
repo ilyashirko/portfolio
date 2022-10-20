@@ -51,5 +51,6 @@ def resume(request):
         'soft_skills': soft_skills,
         'higher_education': highter_education,
         'places_of_work': places_of_work,
+        'about_candidate': resume.about_candidate.split('\n'),
     }
     return render(request, 'resume.html', context=context)

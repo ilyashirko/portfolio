@@ -130,6 +130,7 @@ class Resume(models.Model):
         verbose_name='Опыт работы',
         related_name='resume'
     )
+    about_candidate = models.TextField('Коротко о себе', blank=True)
 
     def get_places_of_work(self):
         return self.person.places_of_work.order_by('-started_at')
