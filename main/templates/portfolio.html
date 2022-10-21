@@ -37,11 +37,9 @@
                 {% endfor %}
 
                 <div class="row" style="margin-top: 5mm;">
-                    <div class="col-1 align-self-center" style="display:flex;">
-                        <h5>Стек: </h5>
-                    </div>
+                    <div class="col-1 align-self-center" style="display:flex;"><h5>Стек: </h5></div>
                     {% for skill in project.stack %}
-                        <div class="col-1 align-self-center" style="width: 15%;">
+                        <div class="col-1 align-self-center" style="width: 200px;">
                             <button  class="btn btn-primary" style="width: 100%; ">{{skill}}</button>
                         </div>
                     {%endfor%}
