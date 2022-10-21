@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Контакты{%endblock%}
+
+{% block content %}
+<div class="container" style="margin-right: 10%;margin-left: 10%; width=80%">
+    {% for project in projects %}
+        <div class="row" style="margin-top: 10px;margin-bottom: 10mm;">
+            <div class="col-lg-3 col-xxl-3" style="position: relative; height:200px;" >
+                <div class="row float-right">
+                    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" style="text-align: center;">
+                            <div class="carousel-item active">
+                                <a href="{{project.first_image}}"><img src="{{project.first_image}}" style="height:200px; right: 0;" alt="..."></a>
+                            </div>
+                            {% for image in project.images%}
+                            <div class="carousel-item">
+                                <a href="{{image}}"><img src="{{image}}" style="height:200px; " alt="..."></a>
+                            </div>
+                            {%endfor%}
+                            
+                        </div>
+                      </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-9 col-xxl-9">
+                
+           
+                {{first_image}}
+                <h4><strong>{{ project.title }}</strong></h4>
+                <a style="margin-bottom: 5mm;" href="{{project.url}}">{{project.url}}</a>
+                {% for paragraph in project.description %}
+                    <p style="margin: 0;">{{paragraph}}</p>
+                {% endfor %}
+
+                <div class="row" style="margin-top: 5mm;">
+                    <div class="col-1 align-self-center" style="display:flex;">
+                        <h5>Стек: </h5>
+                    </div>
+                    {% for skill in project.stack %}
+                        <div class="col-1 align-self-center" style="width: 15%;">
+                            <button  class="btn btn-primary" style="width: 100%; ">{{skill}}</button>
+                        </div>
+                    {%endfor%}
+                </div>
+                {% if not project.finished %}
+                    <p style="color: red">Проект находится в разработке</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{%endblock%}

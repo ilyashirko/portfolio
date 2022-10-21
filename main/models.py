@@ -1,5 +1,4 @@
 from datetime import datetime
-from inspect import stack
 
 from django.core.validators import RegexValidator
 from django.db import models
@@ -307,14 +306,15 @@ class BiographyChapter(models.Model):
         'Порядковый номер (UNIQUE ONLY)',
         default=0
     )
-    title = models.CharField('Название раздела', max_length=25)
+    title = models.CharField('Название раздела', max_length=100)
     text = models.TextField('Текст')
     photo = models.ForeignKey(
         'Photo',
         verbose_name='Фотография',
         related_name='biography_chapter',
         on_delete=models.PROTECT,
-        blank=True
+        blank=True,
+        null=True
     )
 
     def __str__(self):

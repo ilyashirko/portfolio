@@ -19,10 +19,10 @@
             <img width="10%" src="{% static 'rubiks_cube.png' %}">
             <span>@IlyaShirko</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Биография</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Портфолио</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Резюме</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Контакты</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'biography' %}">Биография</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'portfolio' %}">Портфолио</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'resume' %}">Резюме</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
             </ul>
         </div>
     </nav>
@@ -32,7 +32,7 @@
 
     <footer>
         <p style="text-align: center; color: gray; margin: 0px; margin-top: 10mm;">&#169; Ширко Илья Владимирович 2022.</p>
-        <p style="text-align: center; color: gray; margin: 0px; margin-bottom: 5mm;">Разрешено использование исходного кода в личных целях. Для коммерческого использования свяжитесь с разработчиком.</p>
+        <!-- <p style="text-align: center; color: gray; margin: 0px; margin-bottom: 5mm;">Разрешено использование исходного кода в личных целях. Для коммерческого использования свяжитесь с разработчиком.</p> -->
     </footer>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 </body>

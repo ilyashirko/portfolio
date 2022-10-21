@@ -9,8 +9,10 @@
     margin-left: 12px;
     color: var(--bs-black);
 }
-.table_of_contents {
-    text-align: center;
+.underline {
     color: var(--bs-black);
     border-bottom-style: solid;
+}
+.table_of_contents {
+    text-align: center;
 }

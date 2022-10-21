@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Биография{%endblock%}
+
+{% block content %}
+<div class="container" style="margin: 0;margin-right: 10%;margin-left: 10%; width=80%">
+    <div class="row">
+        {% for chapter in biography %}
+        <div class="h-auto ">
+            <h3 style="text-align: right; margin-top: 5mm; margin-bottom: 5mm;"><strong>{{ chapter.title }}</strong></h3>
+            {% if chapter.image %}
+                <img style="margin: 0 20px 10px 0; padding: 0; float: left; width: 30%" src="{{ chapter.image }}">
+            {% endif %}
+            {% for paragraph in chapter.paragraphs %}
+                <p style="text-indent: 6mm; text-align: justify; margin: 0;">{{ paragraph }}</p>
+            {% endfor %}
+        
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+{%endblock%}

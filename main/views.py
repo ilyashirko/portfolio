@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from main.models import Photo, Resume
+from main.models import Person, Photo, Resume
 
 
 def make_rows(input_list, columns):
@@ -74,3 +74,51 @@ def resume(request):
         'achievements': achievements,
     }
     return render(request, 'resume.html', context=context)
+
+
+def biography(request):
+    person = Person.objects.get(last_name='Ширко')
+    biography_chapters = [
+        {
+            'title': chapter.title,
+            'paragraphs': chapter.text.split('\n'),
+            'image': chapter.photo.image.url if chapter.photo else None
+        }
+        for chapter in person.biography_chapters.all().order_by('index')
+    ]
+    context = {
+        'biography': biography_chapters
+    }
+    return render(request, 'biography.html', context=context)
+
+
+def contacts(request):
+    person = Person.objects.get(last_name='Ширко')
+    photo = person.photos.get(id=2)
+    context = {
+        'image': photo.image.url,
+        'email': 'ilyashirko@gmail.com',
+        'phonenumber': person.phonenumber,
+        'telegram': 'https://t.me/IlyaShirko'
+    }
+    return render(request, 'contacts.html', context=context)
+
+
+def portfolio(request):
+    person = Person.objects.get(last_name='Ширко')
+    projects = [
+        {
+            'title': project.title,
+            'url': project.url,
+            'description': project.short_description.split('\n'),
+            'stack': [skill.title for skill in project.develop_stack.all()],
+            'finished': project.finished,
+            'first_image': [image.image.url for image in project.images.all()][0],
+            'images': [image.image.url for image in project.images.all()][1:]
+        }
+        for project in person.projects.filter(will_show=True)
+    ]
+    context = {
+        'projects': projects
+    }
+    return render(request, 'portfolio.html', context=context)
