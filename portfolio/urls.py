@@ -6,6 +6,7 @@ from main import views as main_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', main_views.main_page, name='main_page'),
     path('resume/', main_views.resume, name='resume'),
     path('biography/', main_views.biography, name='biography'),
     path('contacts/', main_views.contacts, name='contacts'),

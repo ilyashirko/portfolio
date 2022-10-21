@@ -13,6 +13,16 @@ def make_rows(input_list, columns):
     return new_list
 
 
+def main_page(request):
+    person = Person.objects.get(last_name='Ширко')
+    images = [photo.image.url for photo in person.photos.all()]
+    context = {
+        'first_image': images[0],
+        'images': images[1:]
+    }
+    return render(request, 'main.html', context=context)
+
+
 def resume(request):
     resume = Resume.objects.get(title='Junior Python Developer')
     candidate = resume.person
@@ -99,7 +109,8 @@ def contacts(request):
         'image': photo.image.url,
         'email': 'ilyashirko@gmail.com',
         'phonenumber': person.phonenumber,
-        'telegram': 'https://t.me/IlyaShirko'
+        'telegram': 'https://t.me/IlyaShirko',
+        'telegram_nick': '@IlyaShirko',
     }
     return render(request, 'contacts.html', context=context)
 
@@ -122,3 +133,4 @@ def portfolio(request):
         'projects': projects
     }
     return render(request, 'portfolio.html', context=context)
+

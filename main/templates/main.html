@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Контакты{%endblock%}
+
+{% block content %}
+<div class="container" style="margin-right: 10%;margin-left: 10%; width=80%">
+    <div class="row" style="margin-top: 10px;margin-bottom: 10px; height:450px">
+        <div class="col-lg-5 col-xxl-5 h-auto" style="position: relative;">
+            <div class="row float-right">
+                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner" style="text-align: center;">
+                        <div class="carousel-item active">
+                            <a href="{{first_image}}"><img src="{{first_image}}" style="max-width:100%; max-height: 450px;" alt="..."></a>
+                        </div>
+                        {% for image in images %}
+                        <div class="carousel-item">
+                            <a href="{{image}}"><img src="{{image}}" style="max-width:100%; max-height: 450px;" alt="..."></a>
+                        </div>
+                        {%endfor%}
+                        
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-xxl-7 h-auto">
+            <h2>Привет, меня зовут Илья!</h2>
+            <h5>Я backend Python разработчик и это мой сайт-визитка ручной работы.</h5>
+            <p>В шапке сайта вы можете погулять по разным разделам.</p>
+            <p>Там вы найдете информацию обо мне, моих проектах, способы связи со мной и сможете ознакомиться с моим резюме.</p>
+            <p>Если вы хотите предложить сотрудничество - воспользуйтесь любым <a href="{% url 'contacts' %}">способом связи.</a></p>
+        </div>
+    </div>
+</div>
+{%endblock%}
