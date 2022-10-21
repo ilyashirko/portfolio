@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "portfolio"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 Django = "^4.1.1"
 django-phonenumbers = "^1.0.1"
 django-phonenumber-field = "^7.0.0"
