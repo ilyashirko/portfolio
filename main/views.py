@@ -15,7 +15,7 @@ def make_rows(input_list, columns):
 
 def main_page(request):
     person = Person.objects.get(last_name='Ширко')
-    images = [photo.image.url for photo in person.photos.all()]
+    images = [photo.image.url for photo in person.photos.filter(show_in_main=True)]
     context = {
         'first_image': images[0],
         'images': images[1:]
@@ -62,6 +62,11 @@ def resume(request):
         }
         for achievement in candidate.achievements.all()
     ]
+    try:
+        photo = candidate.photos.get(is_main=True)
+    except (Photo.DoesNotExist, Photo.MultipleObjectsReturned):
+        import sys
+        sys.stdout.write('ERROR: Check "is_main" photos.')
     context = {
         'candidate': {
             'first_name': candidate.first_name,
@@ -71,7 +76,7 @@ def resume(request):
             'phonenumber': candidate.phonenumber,
             'email': candidate.email,
             'github': candidate.github,
-            'photo': Photo.objects.filter(person=candidate).first().image.url
+            'photo': photo.image.url
         },
         'hard_skills': make_rows(hard_skills, 3),
         'soft_skills': soft_skills,
@@ -104,7 +109,11 @@ def biography(request):
 
 def contacts(request):
     person = Person.objects.get(last_name='Ширко')
-    photo = person.photos.get(id=2)
+    try:
+        photo = person.photos.get(is_main=True)
+    except (Photo.DoesNotExist, Photo.MultipleObjectsReturned):
+        import sys
+        sys.stdout.write('ERROR: Check "is_main" photos.')
     context = {
         'image': photo.image.url,
         'email': 'ilyashirko@gmail.com',

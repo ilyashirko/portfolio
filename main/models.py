@@ -75,7 +75,7 @@ class Person(models.Model):
         choices=EDUCATION_DEGREES,
         max_length=50
     )
-
+    
     def get_age(self):
         today = datetime.now().date()
         if (
@@ -281,6 +281,8 @@ class Photo(models.Model):
         'Фотография',
         upload_to='images'
     )
+    is_main = models.BooleanField('Использовать как основную', default=False)
+    show_in_main = models.BooleanField('Использовать на главной', default=False)
 
     class Meta:
         ordering = ['index', ]
