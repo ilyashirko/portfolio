@@ -21,7 +21,6 @@ DEBUG = env.bool('DEBUG', False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['127.0.0.1'])
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -115,7 +114,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = '/assets/'
+STATIC_ROOT = 'assets'
 
 STATICFILES_DIRS = [
     'static',
